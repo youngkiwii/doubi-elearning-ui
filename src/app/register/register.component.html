@@ -1,0 +1,101 @@
+<div class="min-h-dvh grid lg:grid-cols-2">
+  <div
+    class="flex items-center justify-center flex-col gap-y-8 container lg:px-20 lg:py-16 max-w-3xl"
+  >
+    <div class="text-center">
+      <h1 class="text-2xl">Connectez-vous sur votre compte</h1>
+      <p class="text-muted-foreground mt-2">
+        Entrez vos informations pour vous connecter.
+      </p>
+    </div>
+    <button
+      hlmBtn
+      variant="outline"
+      class="space-x-2 w-full"
+      (click)="loginWithProvider(AuthProvider.google)"
+    >
+      <img src="/icon/google.png" alt="Google icon" width="20" height="20" />
+      <span>Google</span>
+    </button>
+    <div class="relative border-b flex items-center justify-center w-full">
+      <span class="absolute bg-white px-6">OU</span>
+    </div>
+
+    <form
+      [formGroup]="form"
+      (submit)="onRegister()"
+      class="w-full flex flex-col gap-y-4"
+    >
+      <div class="grid grid-cols-2 gap-x-4">
+        <hlm-form-field>
+          <input
+            hlmInput
+            name="firstname"
+            type="text"
+            placeholder="Prénom"
+            class="w-full"
+            formControlName="firstname"
+          />
+          <hlm-error>Le prénom est requis</hlm-error>
+        </hlm-form-field>
+        <hlm-form-field>
+          <input
+            hlmInput
+            name="lastname"
+            type="text"
+            placeholder="Nom"
+            class="w-full"
+            formControlName="lastname"
+          />
+          <hlm-error>Le nom est requis</hlm-error>
+        </hlm-form-field>
+      </div>
+
+      <hlm-form-field>
+        <input
+          hlmInput
+          name="email"
+          type="email"
+          placeholder="Email"
+          class="w-full"
+          formControlName="email"
+        />
+        <hlm-error>L'adresse mail est requis</hlm-error>
+      </hlm-form-field>
+
+      <hlm-form-field>
+        <input
+          hlmInput
+          name="password"
+          type="password"
+          placeholder="*********"
+          class="w-full"
+          formControlName="password"
+        />
+        <hlm-error>L'adresse mail est requis</hlm-error>
+      </hlm-form-field>
+
+      <div>
+        <hlm-form-field>
+          <label class="flex items-center text-sm" hlmLabel>
+            <hlm-checkbox class="mr-2" formControlName="rememberMe" />
+            Se souvenir de moi
+          </label>
+        </hlm-form-field>
+      </div>
+      <button hlmBtn type="submit" [disabled]="form.invalid" class="w-full">
+        Se connecter
+      </button>
+      <p class="text-center">
+        Vous avez déjà un compte ?
+        <a
+          [routerLink]="['/login']"
+          [className]="buttonVariants({ variant: 'link', size: 'none' })"
+        >
+          Se connecter
+        </a>
+      </p>
+    </form>
+  </div>
+  <div class="h-full w-full bg-primary hidden lg:block"></div>
+</div>
