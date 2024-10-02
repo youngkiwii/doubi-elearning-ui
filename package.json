@@ -36,6 +36,8 @@
     "@angular/cli": "^18.2.4",
     "@angular/compiler-cli": "^18.2.0",
     "@spartan-ng/cli": "^0.0.1-alpha.366",
+    "@testing-library/angular": "^17.3.1",
+    "@testing-library/user-event": "^14.5.2",
     "@types/jasmine": "~5.1.0",
     "autoprefixer": "^10.4.20",
     "jasmine-core": "~5.2.0",
