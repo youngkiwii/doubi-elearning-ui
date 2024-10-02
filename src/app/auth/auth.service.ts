@@ -1,7 +1,13 @@
-import { HttpClient } from '@angular/common/http';
+import {
+  HttpBackend,
+  HttpClient,
+  HttpHandlerFn,
+  HttpHeaders,
+  HttpRequest,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 
 interface AuthenticationResponse {
   access_token: string;
@@ -18,6 +24,11 @@ export const GOOGLE_AUTH_URL = `${API_BASE_URL}${OAUTH2_AUTHORIZE_URI}/google?re
   providedIn: 'root',
 })
 export class AuthService {
+  public refreshInProgress = false;
+  refreshTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<
+    string | null
+  >(null);
+
   constructor(private router: Router, private http: HttpClient) {}
 
   public getAccessToken(): string | null {
@@ -83,6 +94,24 @@ export class AuthService {
     });
   }
 
+  public refreshToken(): Observable<AuthenticationResponse> {
+    const rememberMe = !!localStorage.getItem('access_token');
+    const refreshToken = this.getRefreshToken();
+
+    return this.http
+      .post<AuthenticationResponse>(`${API_BASE_URL}/api/auth/refresh`, {
+        refreshToken,
+      })
+      .pipe(
+        tap((response) => {
+          this.storeTokens(response, rememberMe);
+        }),
+        catchError((error) => {
+          return throwError(() => error);
+        })
+      );
+  }
+
   public register(
     request: {
       email: string;
@@ -127,6 +156,10 @@ export class AuthService {
   public logout(): void {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
+    localStorage.removeItem('user');
+    sessionStorage.removeItem('access_token');
+    sessionStorage.removeItem('refresh_token');
+    sessionStorage.removeItem('user');
     this.router.navigate(['/login']);
   }
 }
