@@ -59,8 +59,16 @@
           placeholder="Email"
           class="w-full"
           formControlName="email"
+          autocomplete="email"
         />
-        <hlm-error>L'adresse mail est requis</hlm-error>
+        <hlm-error>
+          <ng-container *ngIf="form.get('email')?.hasError('required')">
+            L'email est requis
+          </ng-container>
+          <ng-container *ngIf="form.get('email')?.hasError('email')">
+            L'email n'est pas valide
+          </ng-container>
+        </hlm-error>
       </hlm-form-field>
 
       <hlm-form-field>
@@ -71,8 +79,30 @@
           placeholder="*********"
           class="w-full"
           formControlName="password"
+          autocomplete="new-password"
         />
-        <hlm-error>L'adresse mail est requis</hlm-error>
+        <hlm-error>
+          <ng-container *ngIf="form.get('password')?.hasError('required')">
+            Le mot de passe est requis.
+          </ng-container>
+          <ng-container *ngIf="form.get('password')?.hasError('pattern')">
+            Le mot de passe doit contenir au moins 8 caractères, une lettre
+            majuscule, une lettre minuscule et un chiffre.
+          </ng-container>
+        </hlm-error>
+      </hlm-form-field>
+
+      <hlm-form-field>
+        <input
+          hlmInput
+          autocomplete="new-password"
+          name="confirmPassword"
+          type="password"
+          placeholder="*********"
+          class="w-full"
+          formControlName="confirmPassword"
+        />
+        <hlm-error> Les mots de passe ne correspondent pas </hlm-error>
       </hlm-form-field>
 
       <div>

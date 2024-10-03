@@ -12,11 +12,13 @@ import { buttonVariants, HlmButtonModule } from '@spartan-ng/ui-button-helm';
 import { HlmFormFieldModule } from '@spartan-ng/ui-formfield-helm';
 import { HlmInputModule } from '@spartan-ng/ui-input-helm';
 import { HlmCheckboxModule } from '@spartan-ng/ui-checkbox-helm';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [
+    CommonModule,
     HlmButtonModule,
     ReactiveFormsModule,
     HlmFormFieldModule,
@@ -35,13 +37,37 @@ export class RegisterComponent {
   public buttonVariants = buttonVariants;
   public AuthProvider = AuthProvider;
 
-  public form: FormGroup = this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
-    firstname: ['', Validators.required],
-    lastname: ['', Validators.required],
-    password: ['', Validators.required],
-    rememberMe: [false],
-  });
+  public form: FormGroup = this.formBuilder.group(
+    {
+      email: ['', [Validators.required, Validators.email]],
+      firstname: ['', Validators.required],
+      lastname: ['', Validators.required],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/),
+        ],
+      ],
+      confirmPassword: ['', Validators.required],
+      rememberMe: [false],
+    },
+    {
+      validators: (form: FormGroup) => {
+        const { password, confirmPassword } = form.value;
+        if (password !== confirmPassword) {
+          this.form.get('confirmPassword')?.markAsTouched();
+          this.form.get('password')?.markAsTouched();
+          form.controls['confirmPassword'].setErrors({
+            passwordMismatch: true,
+          });
+        } else {
+          form.controls['confirmPassword'].setErrors(null);
+        }
+        return password === confirmPassword ? null : { passwordMismatch: true };
+      },
+    }
+  );
 
   public ngOnInit(): void {
     if (this.authService.isLoggedIn()) {

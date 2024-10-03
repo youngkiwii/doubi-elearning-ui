@@ -3,14 +3,19 @@ import { inject } from '@angular/core';
 import { AuthService } from './auth.service';
 import { catchError, filter, switchMap, take, throwError } from 'rxjs';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const router = inject(Router);
-
   const accessToken = authService.getAccessToken();
+  const baseURL = environment.apiUrl;
 
-  if (accessToken && !req.url.includes('/api/auth/refresh')) {
+  if (
+    accessToken &&
+    !req.url.includes('/api/auth/refresh') &&
+    req.url.startsWith(baseURL)
+  ) {
     req = req.clone({
       setHeaders: {
         Authorization: `Bearer ${accessToken}`,

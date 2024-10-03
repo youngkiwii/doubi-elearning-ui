@@ -8,17 +8,15 @@ import {
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 interface AuthenticationResponse {
   access_token: string;
   refresh_token: string;
 }
 
-export const API_BASE_URL = 'http://localhost:8080';
 export const OAUTH2_AUTHORIZE_URI = '/oauth2/authorize';
-export const UI_BASE_URL = 'http://localhost:4200';
-
-export const GOOGLE_AUTH_URL = `${API_BASE_URL}${OAUTH2_AUTHORIZE_URI}/google?redirect_uri=${UI_BASE_URL}/login`;
+export const GOOGLE_AUTH_URL = `${environment.apiUrl}${OAUTH2_AUTHORIZE_URI}/google?redirect_uri=${window.location.origin}/login`;
 
 @Injectable({
   providedIn: 'root',
@@ -81,7 +79,7 @@ export class AuthService {
   ): Observable<void> {
     return new Observable((observer) => {
       this.http
-        .post<AuthenticationResponse>(API_BASE_URL + '/api/auth/login', request)
+        .post<AuthenticationResponse>('/api/auth/login', request)
         .subscribe({
           next: ({ access_token, refresh_token }) => {
             this.storeTokens({ access_token, refresh_token }, rememberMe);
@@ -99,7 +97,7 @@ export class AuthService {
     const refreshToken = this.getRefreshToken();
 
     return this.http
-      .post<AuthenticationResponse>(`${API_BASE_URL}/api/auth/refresh`, {
+      .post<AuthenticationResponse>('/api/auth/refresh', {
         refreshToken,
       })
       .pipe(
@@ -123,10 +121,7 @@ export class AuthService {
   ): Observable<void> {
     return new Observable((observer) => {
       this.http
-        .post<AuthenticationResponse>(
-          API_BASE_URL + '/api/auth/register',
-          request
-        )
+        .post<AuthenticationResponse>('/api/auth/register', request)
         .subscribe({
           next: ({ access_token, refresh_token }) => {
             this.storeTokens({ access_token, refresh_token }, rememberMe);
@@ -141,7 +136,7 @@ export class AuthService {
 
   public getUser(rememberMe: boolean): Observable<void> {
     return new Observable((observer) => {
-      this.http.get(API_BASE_URL + '/api/auth/me').subscribe({
+      this.http.get('/api/auth/me').subscribe({
         next: (user) => {
           this.storeUser(user, rememberMe);
           observer.next();
