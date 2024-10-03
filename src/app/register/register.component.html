@@ -1,0 +1,146 @@
+<div class="min-h-dvh grid lg:grid-cols-2">
+  <div
+    class="flex items-center justify-center flex-col gap-y-8 container lg:px-20 lg:py-16 max-w-3xl"
+  >
+    <div class="text-center">
+      <h1 class="text-2xl">Créer un compte</h1>
+      <p class="text-muted-foreground mt-2">
+        Créez un compte pour accéder à votre espace personnel
+      </p>
+    </div>
+    <button
+      hlmBtn
+      variant="outline"
+      class="space-x-2 w-full"
+      (click)="loginWithProvider(AuthProvider.google)"
+    >
+      <img src="/icon/google.png" alt="Google icon" width="20" height="20" />
+      <span>Google</span>
+    </button>
+    <div class="relative border-b flex items-center justify-center w-full">
+      <span class="absolute bg-white px-6">OU</span>
+    </div>
+
+    <form
+      [formGroup]="form"
+      (submit)="onRegister()"
+      class="w-full flex flex-col gap-y-4"
+    >
+      <div class="grid grid-cols-2 gap-x-4">
+        <hlm-form-field>
+          <input
+            hlmInput
+            name="firstname"
+            type="text"
+            placeholder="Prénom"
+            class="w-full"
+            formControlName="firstname"
+          />
+          <hlm-error>Le prénom est requis</hlm-error>
+        </hlm-form-field>
+        <hlm-form-field>
+          <input
+            hlmInput
+            name="lastname"
+            type="text"
+            placeholder="Nom"
+            class="w-full"
+            formControlName="lastname"
+          />
+          <hlm-error>Le nom est requis</hlm-error>
+        </hlm-form-field>
+      </div>
+
+      <hlm-form-field>
+        <input
+          hlmInput
+          name="email"
+          type="email"
+          placeholder="Email"
+          class="w-full"
+          formControlName="email"
+          autocomplete="email"
+        />
+        <hlm-error>
+          <ng-container *ngIf="form.get('email')?.hasError('required')">
+            L'email est requis
+          </ng-container>
+          <ng-container *ngIf="form.get('email')?.hasError('email')">
+            L'email n'est pas valide
+          </ng-container>
+        </hlm-error>
+      </hlm-form-field>
+
+      <hlm-form-field>
+        <div class="relative flex items-center">
+          <input
+            hlmInput
+            name="password"
+            [type]="hidePassword ? 'password' : 'text'"
+            placeholder="*********"
+            class="w-full"
+            formControlName="password"
+            autocomplete="new-password"
+          />
+          <hlm-icon
+            [name]="!hidePassword ? 'lucideEye' : 'lucideEyeOff'"
+            class="absolute right-3 cursor-pointer text-muted-foreground hover:text-muted-foreground/50"
+            (click)="hidePassword = !hidePassword"
+          />
+        </div>
+
+        <hlm-error>
+          <ng-container *ngIf="form.get('password')?.hasError('required')">
+            Le mot de passe est requis.
+          </ng-container>
+          <ng-container *ngIf="form.get('password')?.hasError('pattern')">
+            Le mot de passe doit contenir au moins 8 caractères, une lettre
+            majuscule, une lettre minuscule et un chiffre.
+          </ng-container>
+        </hlm-error>
+      </hlm-form-field>
+
+      <hlm-form-field>
+        <div class="relative flex items-center">
+          <input
+            hlmInput
+            autocomplete="new-password"
+            name="confirmPassword"
+            [type]="hidePassword ? 'password' : 'text'"
+            placeholder="*********"
+            class="w-full"
+            formControlName="confirmPassword"
+          />
+          <hlm-icon
+            [name]="!hidePassword ? 'lucideEye' : 'lucideEyeOff'"
+            class="absolute right-3 cursor-pointer text-muted-foreground hover:text-muted-foreground/50"
+            (click)="hidePassword = !hidePassword"
+          />
+        </div>
+        <hlm-error> Les mots de passe ne correspondent pas </hlm-error>
+      </hlm-form-field>
+
+      <div>
+        <hlm-form-field>
+          <label class="flex items-center text-sm" hlmLabel>
+            <hlm-checkbox class="mr-2" formControlName="rememberMe" />
+            Se souvenir de moi
+          </label>
+        </hlm-form-field>
+      </div>
+      <button hlmBtn type="submit" [disabled]="form.invalid" class="w-full">
+        S'inscrire
+      </button>
+      <p class="text-center">
+        Vous avez déjà un compte ?
+        <a
+          [routerLink]="['/login']"
+          [className]="buttonVariants({ variant: 'link', size: 'none' })"
+        >
+          Se connecter
+        </a>
+      </p>
+    </form>
+  </div>
+  <div class="h-full w-full bg-primary hidden lg:block"></div>
+</div>
