@@ -38,14 +38,21 @@
         <hlm-error>L'adresse mail est requis</hlm-error>
       </hlm-form-field>
       <hlm-form-field>
-        <input
-          hlmInput
-          name="password"
-          type="password"
-          placeholder="*********"
-          class="w-full"
-          formControlName="password"
-        />
+        <div class="relative flex items-center">
+          <input
+            hlmInput
+            name="password"
+            [type]="hidePassword ? 'password' : 'text'"
+            placeholder="*********"
+            class="w-full"
+            formControlName="password"
+          />
+          <hlm-icon
+            [name]="!hidePassword ? 'lucideEye' : 'lucideEyeOff'"
+            class="absolute right-3 cursor-pointer text-muted-foreground hover:text-muted-foreground/50"
+            (click)="hidePassword = !hidePassword"
+          />
+        </div>
         <hlm-error>L'adresse mail est requis</hlm-error>
       </hlm-form-field>
       <div class="flex justify-between gap-x-2">

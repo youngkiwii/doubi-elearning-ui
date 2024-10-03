@@ -72,15 +72,23 @@
       </hlm-form-field>
 
       <hlm-form-field>
-        <input
-          hlmInput
-          name="password"
-          type="password"
-          placeholder="*********"
-          class="w-full"
-          formControlName="password"
-          autocomplete="new-password"
-        />
+        <div class="relative flex items-center">
+          <input
+            hlmInput
+            name="password"
+            [type]="hidePassword ? 'password' : 'text'"
+            placeholder="*********"
+            class="w-full"
+            formControlName="password"
+            autocomplete="new-password"
+          />
+          <hlm-icon
+            [name]="!hidePassword ? 'lucideEye' : 'lucideEyeOff'"
+            class="absolute right-3 cursor-pointer text-muted-foreground hover:text-muted-foreground/50"
+            (click)="hidePassword = !hidePassword"
+          />
+        </div>
+
         <hlm-error>
           <ng-container *ngIf="form.get('password')?.hasError('required')">
             Le mot de passe est requis.
@@ -93,15 +101,22 @@
       </hlm-form-field>
 
       <hlm-form-field>
-        <input
-          hlmInput
-          autocomplete="new-password"
-          name="confirmPassword"
-          type="password"
-          placeholder="*********"
-          class="w-full"
-          formControlName="confirmPassword"
-        />
+        <div class="relative flex items-center">
+          <input
+            hlmInput
+            autocomplete="new-password"
+            name="confirmPassword"
+            [type]="hidePassword ? 'password' : 'text'"
+            placeholder="*********"
+            class="w-full"
+            formControlName="confirmPassword"
+          />
+          <hlm-icon
+            [name]="!hidePassword ? 'lucideEye' : 'lucideEyeOff'"
+            class="absolute right-3 cursor-pointer text-muted-foreground hover:text-muted-foreground/50"
+            (click)="hidePassword = !hidePassword"
+          />
+        </div>
         <hlm-error> Les mots de passe ne correspondent pas </hlm-error>
       </hlm-form-field>
 

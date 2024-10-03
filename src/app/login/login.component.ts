@@ -13,6 +13,9 @@ import { buttonVariants } from '@spartan-ng/ui-button-helm';
 import { AuthService, GOOGLE_AUTH_URL } from '../auth/auth.service';
 import { AuthProvider } from '../models/AuthProvider';
 import { HlmCheckboxModule } from '@spartan-ng/ui-checkbox-helm';
+import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
+import { provideIcons } from '@ng-icons/core';
+import { lucideEye, lucideEyeOff } from '@ng-icons/lucide';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +27,13 @@ import { HlmCheckboxModule } from '@spartan-ng/ui-checkbox-helm';
     HlmInputModule,
     RouterModule,
     HlmCheckboxModule,
+    HlmIconComponent,
+  ],
+  providers: [
+    provideIcons({
+      lucideEye,
+      lucideEyeOff,
+    }),
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -36,6 +46,7 @@ export class LoginComponent implements OnInit {
 
   public buttonVariants = buttonVariants;
   public AuthProvider = AuthProvider;
+  public hidePassword = true;
 
   public form: FormGroup = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],

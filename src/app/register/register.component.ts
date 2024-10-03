@@ -13,6 +13,9 @@ import { HlmFormFieldModule } from '@spartan-ng/ui-formfield-helm';
 import { HlmInputModule } from '@spartan-ng/ui-input-helm';
 import { HlmCheckboxModule } from '@spartan-ng/ui-checkbox-helm';
 import { CommonModule } from '@angular/common';
+import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
+import { provideIcons } from '@ng-icons/core';
+import { lucideEye, lucideEyeOff } from '@ng-icons/lucide';
 
 @Component({
   selector: 'app-register',
@@ -25,6 +28,13 @@ import { CommonModule } from '@angular/common';
     HlmInputModule,
     RouterModule,
     HlmCheckboxModule,
+    HlmIconComponent,
+  ],
+  providers: [
+    provideIcons({
+      lucideEye,
+      lucideEyeOff,
+    }),
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
@@ -36,6 +46,8 @@ export class RegisterComponent {
 
   public buttonVariants = buttonVariants;
   public AuthProvider = AuthProvider;
+
+  public hidePassword = true;
 
   public form: FormGroup = this.formBuilder.group(
     {
