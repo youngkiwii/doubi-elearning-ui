@@ -1,10 +1,39 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
+import { provideIcons } from '@ng-icons/core';
+import { lucideArrowRight } from '@ng-icons/lucide';
+import {
+  HlmCardContentDirective,
+  HlmCardDescriptionDirective,
+  HlmCardDirective,
+  HlmCardFooterDirective,
+  HlmCardHeaderDirective,
+  HlmCardTitleDirective,
+} from '@spartan-ng/ui-card-helm';
+import { HlmSeparatorDirective } from '@spartan-ng/ui-separator-helm';
+import { HlmIconModule } from '../../components/ui/ui-icon-helm/src/index';
+import { HlmIconComponent } from '../../components/ui/ui-icon-helm/src/lib/hlm-icon.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [],
+  imports: [
+    HlmCardDirective,
+    HlmCardHeaderDirective,
+    HlmCardTitleDirective,
+    HlmCardDescriptionDirective,
+    HlmCardContentDirective,
+    HlmCardFooterDirective,
+    HlmSeparatorDirective,
+    HlmIconModule,
+    HlmSeparatorDirective,
+    HlmIconComponent,
+  ],
+  providers: [
+    provideIcons({
+      lucideArrowRight,
+    }),
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })

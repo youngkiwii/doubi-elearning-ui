@@ -2,7 +2,7 @@
   [ngClass]="{
     'px-4': !showNavbar(),
     'px-8': showNavbar(),
-    'w-full h-screen grid grid-rows-[60px_1fr_.3fr] gap-y-8 pb-6 border-r-[1px] border-slate-200': true
+    'w-full h-screen grid grid-rows-[60px_1fr_.3fr] gap-y-8 pb-6 border-r-[1px] border-slate-200 transition-all duration-300 ease-linear': true
   }"
 >
   <div
@@ -20,7 +20,9 @@
 
     <hlm-icon
       class="cursor-pointer text-muted-foreground hover:text-muted-foreground/50"
-      name="lucideArrowLeftFromLine"
+      [name]="
+        showNavbar() ? 'lucideArrowLeftFromLine' : 'lucideArrowRightFromLine'
+      "
       (click)="toggleNavbar()"
       size="sm"
     />
@@ -143,13 +145,21 @@
         </a>
       </li>
       <li>
-        <div class="flex justify-between items-center">
+        <label class="flex justify-between items-center cursor-pointer">
           <div class="flex items-center gap-x-2">
-            <hlm-icon name="lucideMoon" size="sm" />
+            <hlm-icon
+              [name]="isDark ? 'lucideMoon' : 'lucideSunMoon'"
+              size="sm"
+              (click)="toggleDarkmode()"
+            />
             <p *ngIf="showNavbar()">Dark Mode</p>
           </div>
-          <hlm-switch *ngIf="showNavbar()" />
-        </div>
+          <hlm-switch
+            *ngIf="showNavbar()"
+            [checked]="isDark"
+            (click)="toggleDarkmode()"
+          />
+        </label>
       </li>
     </ul>
   </div>
