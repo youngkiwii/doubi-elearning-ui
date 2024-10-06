@@ -1,0 +1,15 @@
+<div class="min-h-screen flex flex-col justify-center items-center bg-gray-100">
+  <h1 class="text-6xl font-bold text-gray-800">404</h1>
+  <h2 class="text-2xl mt-4 text-gray-600">Page non trouvée</h2>
+
+  <p class="mt-2 text-gray-500 text-center">
+    {{ randomSentence }}
+  </p>
+
+  <button
+    (click)="router.navigate(['/'])"
+    class="mt-6 px-4 py-2 bg-primary text-white rounded hover:bg-green-700 cursor-pointer"
+  >
+    Retour à l'accueil
+  </button>
+</div>

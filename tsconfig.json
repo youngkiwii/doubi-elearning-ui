@@ -36,6 +36,18 @@
       ],
       "@spartan-ng/ui-icon-helm": [
         "./src/components/ui/ui-icon-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-card-helm": [
+        "./src/components/ui/ui-card-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-skeleton-helm": [
+        "./src/components/ui/ui-skeleton-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-switch-helm": [
+        "./src/components/ui/ui-switch-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-separator-helm": [
+        "./src/components/ui/ui-separator-helm/src/index.ts"
       ]
     }
   },

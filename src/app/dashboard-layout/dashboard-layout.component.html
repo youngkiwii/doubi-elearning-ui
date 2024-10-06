@@ -1,9 +1,15 @@
-<div class="grid grid-cols-[250px_1fr]">
-  <div>
-    <app-navbar />
+<div
+  [ngClass]="{
+    'grid-cols-[48px_1fr]': !toggleNavbar(),
+    'grid-cols-[250px_1fr]': toggleNavbar(),
+    grid: true
+  }"
+>
+  <div class="w-fit">
+    <app-navbar [(showNavbar)]="toggleNavbar" />
   </div>
 
-  <div class="grid grid-rows-[60px_1fr]">
+  <div class="w-full grid grid-rows-[60px_1fr]">
     <div>
       <app-header />
     </div>

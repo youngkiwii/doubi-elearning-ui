@@ -1,76 +1,168 @@
 <nav
-  class="h-screen grid grid-rows-[60px_1fr_.3fr] gap-y-8 px-8 pb-6 border-r-[1px] border-slate-200"
+  [ngClass]="{
+    'px-4': !showNavbar(),
+    'px-8': showNavbar(),
+    'w-full h-screen grid grid-rows-[60px_1fr_.3fr] gap-y-8 pb-6 border-r-[1px] border-slate-200': true
+  }"
 >
-  <div class="self-center flex justify-between items-center">
-    <div class="w-4 h-4">
-      <img src="favicon.ico" alt="logo" />
+  <div
+    [ngClass]="{
+      'grid grid-cols-[1fr_20px] items-center': showNavbar(),
+      'self-center': true
+    }"
+  >
+    <div *ngIf="showNavbar()" class="flex items-center gap-x-2">
+      <div class="w-4 h-4">
+        <img src="favicon.ico" alt="logo" />
+      </div>
+      <h2 class="text-lg md:text-xl">E-learning</h2>
     </div>
-    <h2 class="text-lg md:text-xl">E-learning</h2>
-    <div class="w-4 h-4">
-      <img src="favicon.ico" alt="reduce" />
-    </div>
+
+    <hlm-icon
+      class="cursor-pointer text-muted-foreground hover:text-muted-foreground/50"
+      name="lucideArrowLeftFromLine"
+      (click)="toggleNavbar()"
+      size="sm"
+    />
   </div>
 
-  <div class="space-y-8">
+  <div>
     <ul class="space-y-2">
       <li>
         <a
-          href="#"
-          class="flex items-center text-slate-800 hover:text-slate-900"
+          href="/dashboard"
+          class="flex items-center text-slate-800 hover:text-muted-foreground"
         >
-          <span>Accueil</span>
+          <hlm-icon name="lucideHome" size="sm" />
+          <span *ngIf="showNavbar()" class="ml-2">Accueil</span>
         </a>
       </li>
       <li>
         <a
-          href="#"
-          class="flex items-center text-slate-800 hover:text-slate-900"
+          href="/dashboard/favorites"
+          class="flex items-center text-slate-800 hover:text-muted-foreground"
         >
-          <span>Favoris</span>
+          <hlm-icon name="lucideBookmark" size="sm" />
+          <span *ngIf="showNavbar()" class="ml-2">Favoris</span>
         </a>
       </li>
     </ul>
 
-    <ul class="space-y-2">
-      <a href="#" class="flex items-center text-slate-800 hover:text-slate-900">
-        <li>Cours</li>
-      </a>
-      <a href="#" class="flex items-center text-slate-800 hover:text-slate-900">
-        <li>Tutoriels</li>
-      </a>
-      <a href="#" class="flex items-center text-slate-800 hover:text-slate-900">
-        <li>Meilleures pratiques</li>
-      </a>
-      <a href="#" class="flex items-center text-slate-800 hover:text-slate-900">
-        <li>Certificats</li>
-      </a>
-    </ul>
+    <brn-separator hlmSeparator class="my-4" />
 
     <ul class="space-y-2">
-      <a href="#" class="flex items-center text-slate-800 hover:text-slate-900">
-        <li>Ressources</li>
-      </a>
-      <a href="#" class="flex items-center text-slate-800 hover:text-slate-900">
-        <li>Évennements</li>
-      </a>
-      <a href="#" class="flex items-center text-slate-800 hover:text-slate-900">
-        <li>Communauté</li>
-      </a>
+      <li>
+        <a
+          href="/dashboard/courses"
+          class="flex items-center text-slate-800 hover:text-muted-foreground"
+        >
+          <hlm-icon name="lucideGraduationCap" size="sm" />
+          <span *ngIf="showNavbar()" class="ml-2">Cours</span>
+        </a>
+      </li>
+      <li>
+        <a
+          href="/dashboard/tutorials"
+          class="flex items-center text-slate-800 hover:text-muted-foreground"
+        >
+          <hlm-icon name="lucideFolder" size="sm" />
+          <span *ngIf="showNavbar()" class="ml-2">Tutoriels</span>
+        </a>
+      </li>
+      <li>
+        <a
+          href="/dashboard/"
+          class="flex items-center text-slate-800 hover:text-muted-foreground"
+        >
+          <hlm-icon name="lucideLightbulb" size="sm" />
+          <span *ngIf="showNavbar()" class="ml-2">Meilleures pratiques</span>
+        </a>
+      </li>
+      <li>
+        <a
+          href="/dashboard/"
+          class="flex items-center text-slate-800 hover:text-muted-foreground"
+        >
+          <hlm-icon name="lucideFileBadge" size="sm" />
+          <span *ngIf="showNavbar()" class="ml-2">Certificats</span>
+        </a>
+      </li>
+    </ul>
+
+    <brn-separator hlmSeparator class="my-4" />
+
+    <ul class="space-y-2">
+      <li>
+        <a
+          href="/dashboard/"
+          class="flex items-center text-slate-800 hover:text-muted-foreground"
+        >
+          <hlm-icon name="lucideLayoutGrid" size="sm" />
+          <span *ngIf="showNavbar()" class="ml-2">Ressources</span>
+        </a>
+      </li>
+      <li>
+        <a
+          href="/dashboard/"
+          class="flex items-center text-slate-800 hover:text-muted-foreground"
+        >
+          <hlm-icon name="lucideCalendarHeart" size="sm" />
+          <span *ngIf="showNavbar()" class="ml-2">Évennements</span>
+        </a>
+      </li>
+      <li>
+        <a
+          href="/dashboard/"
+          class="flex items-center text-slate-800 hover:text-muted-foreground"
+        >
+          <hlm-icon name="lucideGlobe" size="sm" />
+          <span *ngIf="showNavbar()" class="ml-2">Communauté</span>
+        </a>
+      </li>
     </ul>
   </div>
 
   <div class="self-end">
     <ul class="space-y-2">
-      <a href="#" class="flex items-center text-slate-800 hover:text-slate-900">
-        <li>Paramètres</li>
-      </a>
-      <a href="#" class="flex items-center text-slate-800 hover:text-slate-900">
-        <li>Aide</li>
-      </a>
-      <div class="flex justify-between items-center">
-        <p>Dark Mode</p>
-        <input type="checkbox" />
-      </div>
+      <li>
+        <a
+          href="/dashboard/"
+          class="flex items-center text-slate-800 hover:text-muted-foreground"
+        >
+          <hlm-icon name="lucideSettings" size="sm" />
+          <span *ngIf="showNavbar()" class="ml-2">Paramètres</span>
+        </a>
+      </li>
+      <li>
+        <a
+          href="/dashboard/"
+          class="flex items-center text-slate-800 hover:text-muted-foreground"
+        >
+          <hlm-icon name="lucideHelpCircle" size="sm" />
+          <span *ngIf="showNavbar()" class="ml-2">Aides</span>
+        </a>
+      </li>
+      <li>
+        <div class="flex justify-between items-center">
+          <div class="flex items-center gap-x-2">
+            <hlm-icon name="lucideMoon" size="sm" />
+            <p *ngIf="showNavbar()">Dark Mode</p>
+          </div>
+          <hlm-switch *ngIf="showNavbar()" />
+        </div>
+      </li>
     </ul>
   </div>
 </nav>
+<!-- } @else {
+<div class="w-2 absolute top-4 left-4">
+  <hlm-icon
+    class="cursor-pointer text-muted-foreground hover:text-muted-foreground/50"
+    [name]="
+      showNavbar() ? 'lucideArrowLeftFromLine' : 'lucideArrowRightFromLine'
+    "
+    (click)="toggleNavbar()"
+    size="sm"
+  />
+</div>
+} -->
