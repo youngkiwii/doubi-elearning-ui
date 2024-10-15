@@ -11,11 +11,12 @@ import { HlmFormFieldModule } from '@spartan-ng/ui-formfield-helm';
 import { HlmInputModule } from '@spartan-ng/ui-input-helm';
 import { buttonVariants } from '@spartan-ng/ui-button-helm';
 import { AuthService, GOOGLE_AUTH_URL } from '../auth/auth.service';
-import { AuthProvider } from '../models/AuthProvider';
+import { AuthProvider } from '../../models/AuthProvider';
 import { HlmCheckboxModule } from '@spartan-ng/ui-checkbox-helm';
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 import { provideIcons } from '@ng-icons/core';
 import { lucideEye, lucideEyeOff } from '@ng-icons/lucide';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -28,6 +29,7 @@ import { lucideEye, lucideEyeOff } from '@ng-icons/lucide';
     RouterModule,
     HlmCheckboxModule,
     HlmIconComponent,
+    CommonModule,
   ],
   providers: [
     provideIcons({
@@ -47,6 +49,7 @@ export class LoginComponent implements OnInit {
   public buttonVariants = buttonVariants;
   public AuthProvider = AuthProvider;
   public hidePassword = true;
+  public error = '';
 
   public form: FormGroup = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -77,6 +80,7 @@ export class LoginComponent implements OnInit {
   }
 
   public onLogin(): void {
+    this.error = '';
     if (this.form.invalid) return;
     const { email, password, rememberMe } = this.form.value;
     this.authService.login({ email, password }, rememberMe).subscribe({
@@ -85,10 +89,17 @@ export class LoginComponent implements OnInit {
           next: () => {
             this.router.navigate(['/']);
           },
-          error: () => {
+          error: (error) => {
+            this.error =
+              error.error.message ||
+              'Une erreur est survenue, veuillez réessayer.';
             this.authService.logout();
           },
         });
+      },
+      error: (error) => {
+        this.error =
+          error.error.message || 'Une erreur est survenue, veuillez réessayer.';
       },
     });
   }

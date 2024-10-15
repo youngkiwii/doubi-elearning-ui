@@ -81,6 +81,13 @@
           S'inscrire
         </a>
       </p>
+
+      <p
+        *ngIf="error.length"
+        class="text-destructive rounded-md px-4 py-2 border border-destructive text-center"
+      >
+        {{ error }}
+      </p>
     </form>
   </div>
   <div class="h-full w-full bg-primary hidden lg:block"></div>

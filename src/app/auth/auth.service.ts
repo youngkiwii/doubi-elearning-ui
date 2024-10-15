@@ -110,28 +110,16 @@ export class AuthService {
       );
   }
 
-  public register(
-    request: {
-      email: string;
-      password: string;
-      firstname: string;
-      lastname: string;
-    },
-    rememberMe: boolean
-  ): Observable<void> {
-    return new Observable((observer) => {
-      this.http
-        .post<AuthenticationResponse>('/api/auth/register', request)
-        .subscribe({
-          next: ({ access_token, refresh_token }) => {
-            this.storeTokens({ access_token, refresh_token }, rememberMe);
-            observer.next();
-          },
-          error: (error) => {
-            observer.error(error);
-          },
-        });
-    });
+  public register(request: {
+    email: string;
+    password: string;
+    firstname: string;
+    lastname: string;
+  }): Observable<AuthenticationResponse> {
+    return this.http.post<AuthenticationResponse>(
+      '/api/auth/register',
+      request
+    );
   }
 
   public getUser(rememberMe: boolean): Observable<void> {
@@ -145,6 +133,21 @@ export class AuthService {
           observer.error(error);
         },
       });
+    });
+  }
+
+  public forgotPassword(email: string): Observable<void> {
+    return this.http.post<void>('/api/auth/forgot-password', { email });
+  }
+
+  public verifyResetToken(token: string): Observable<void> {
+    return this.http.post<void>('/api/auth/reset-password/verify', { token });
+  }
+
+  public resetPassword(token: string, password: string): Observable<void> {
+    return this.http.post<void>('/api/auth/reset-password', {
+      token,
+      password,
     });
   }
 

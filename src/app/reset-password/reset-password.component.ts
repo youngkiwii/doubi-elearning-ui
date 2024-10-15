@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -5,55 +6,53 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AuthService, GOOGLE_AUTH_URL } from '../auth/auth.service';
-import { Router, RouterModule } from '@angular/router';
-import { AuthProvider } from '../../models/AuthProvider';
+import {
+  ActivatedRoute,
+  Router,
+  RouterLink,
+  RouterModule,
+} from '@angular/router';
+import { provideIcons } from '@ng-icons/core';
+import { lucideArrowLeft, lucideEye, lucideEyeOff } from '@ng-icons/lucide';
 import { buttonVariants, HlmButtonModule } from '@spartan-ng/ui-button-helm';
 import { HlmFormFieldModule } from '@spartan-ng/ui-formfield-helm';
+import { HlmIconModule } from '@spartan-ng/ui-icon-helm';
 import { HlmInputModule } from '@spartan-ng/ui-input-helm';
-import { HlmCheckboxModule } from '@spartan-ng/ui-checkbox-helm';
-import { CommonModule } from '@angular/common';
-import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
-import { provideIcons } from '@ng-icons/core';
-import { lucideEye, lucideEyeOff } from '@ng-icons/lucide';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
-  selector: 'app-register',
+  selector: 'app-reset-password',
   standalone: true,
   imports: [
     CommonModule,
-    HlmButtonModule,
-    ReactiveFormsModule,
     HlmFormFieldModule,
-    HlmInputModule,
+    ReactiveFormsModule,
+    HlmIconModule,
     RouterModule,
-    HlmCheckboxModule,
-    HlmIconComponent,
+    HlmInputModule,
+    HlmButtonModule,
   ],
   providers: [
     provideIcons({
+      lucideArrowLeft,
       lucideEye,
       lucideEyeOff,
     }),
   ],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.scss',
+  templateUrl: './reset-password.component.html',
+  styleUrl: './reset-password.component.scss',
 })
-export class RegisterComponent implements OnInit {
+export class ResetPasswordComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
+  private route = inject(ActivatedRoute);
   private authService = inject(AuthService);
   private router = inject(Router);
 
   public buttonVariants = buttonVariants;
-  public AuthProvider = AuthProvider;
-
-  public hidePassword = true;
+  public error = '';
 
   public form: FormGroup = this.formBuilder.group(
     {
-      email: ['', [Validators.required, Validators.email]],
-      firstname: ['', Validators.required],
-      lastname: ['', Validators.required],
       password: [
         '',
         [
@@ -62,7 +61,6 @@ export class RegisterComponent implements OnInit {
         ],
       ],
       confirmPassword: ['', Validators.required],
-      rememberMe: [false],
     },
     {
       validators: (form: FormGroup) => {
@@ -80,34 +78,33 @@ export class RegisterComponent implements OnInit {
       },
     }
   );
+  public hidePassword = true;
 
   public ngOnInit(): void {
-    if (this.authService.isLoggedIn()) {
-      this.router.navigate(['/']);
-    }
-  }
-
-  public onRegister(): void {
-    if (this.form.invalid) return;
-    const { firstname, lastname, email, password, rememberMe } =
-      this.form.value;
-    this.authService
-      .register({ email, password, firstname, lastname })
-      .subscribe({
-        next: () => {
+    this.route.queryParams.subscribe((params) => {
+      const token = params['token'];
+      this.authService.verifyResetToken(token).subscribe({
+        error: () => {
           this.router.navigate(['/login']);
         },
-        error: (error) => {},
       });
+    });
   }
 
-  public loginWithProvider(provider: AuthProvider) {
-    switch (provider) {
-      case AuthProvider.google:
-        window.location.href = GOOGLE_AUTH_URL;
-        break;
-      default:
-        break;
-    }
+  public onSubmit(): void {
+    if (this.form.invalid) return;
+
+    const { token } = this.route.snapshot.queryParams;
+    const { password } = this.form.value;
+
+    this.authService.resetPassword(token, password).subscribe({
+      next: () => {
+        this.router.navigate(['/login']);
+      },
+      error: (error) => {
+        this.error =
+          error.error.message || 'Une erreur est survenue, veuillez réessayer.';
+      },
+    });
   }
 }
